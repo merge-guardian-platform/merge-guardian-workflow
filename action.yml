@@ -1,5 +1,8 @@
-name: "Merge Guardian Analysis"
-description: "Analyze Pull Requests for potential conflicts using AI"
+name: "Merge Guardian AI"
+description: "AI-powered predictive conflict analysis and risk scoring for GitHub Pull Requests."
+branding:
+  icon: "shield"
+  color: "blue"
 inputs:
   owner:
     description: "GitHub repository owner"
