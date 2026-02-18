@@ -1,0 +1,44 @@
+name: "Merge Guardian Analysis"
+description: "Analyze Pull Requests for potential conflicts using AI"
+inputs:
+  owner:
+    description: "GitHub repository owner"
+    required: true
+    default: ${{ github.repository_owner }}
+  repo:
+    description: "GitHub repository name"
+    required: true
+    default: ${{ github.event.repository.name }}
+  pr-number:
+    description: "Pull Request number"
+    required: true
+    default: ${{ github.event.pull_request.number }}
+  github-token:
+    description: "GitHub Personal Access Token"
+    required: true
+  ai-provider:
+    description: "AI Service Provider (openai, gemini, anthropic)"
+    required: true
+    default: "openai"
+  ai-api-key:
+    description: "API Key for the chosen AI Service Provider"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install Merge Guardian
+      shell: bash
+      run: |
+        echo "Installing Merge Guardian CLI..."
+        go install github.com/merge-guardian-platform/merge-guardian/cmd/merge-guardian@latest
+
+    - name: Run Analysis
+      shell: bash
+      run: |
+        merge-guardian analyze pr \
+          --owner "${{ inputs.owner }}" \
+          --repo "${{ inputs.repo }}" \
+          --pr-number "${{ inputs.pr-number }}" \
+          --github-token "${{ inputs.github-token }}" \
+          --ai-provider "${{ inputs.ai-provider }}" \
+          --ai-api-key "${{ inputs.ai-api-key }}"
